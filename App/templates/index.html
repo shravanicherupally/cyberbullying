@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Cyberbullying Comment Classifier</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,10 +16,6 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
-        }
-        .container:hover {
-            transform: scale(1.01);
         }
         h2 {
             text-align: center;
@@ -48,10 +43,6 @@
             border-radius: 4px;
             font-size: 1em;
             cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        button:hover {
-            background: #0056b3;
         }
         .result {
             margin-top: 25px;
@@ -59,21 +50,9 @@
             border-radius: 4px;
             font-size: 1.1em;
             font-weight: bold;
-        }
-        .bullying {
-            background: #ffe6e6;
-            color: #d60000;
-            border: 1px solid #d60000;
-        }
-        .non-bullying {
-            background: #e6ffea;
-            color: #007f00;
-            border: 1px solid #007f00;
-        }
-        .details {
-            margin-top: 10px;
-            font-size: 0.95em;
-            color: #555;
+            background: #e7fbe7;
+            border: 1px solid #52c152;
+            color: #2c7a2c;
         }
     </style>
 </head>
@@ -86,7 +65,7 @@
 
             <label for="platform">Platform:</label>
             <select name="platform" required>
-                <option value="" disabled selected>Select a platform</option>
+                <option value="" disabled {% if not platform %}selected{% endif %}>Select a platform</option>
                 <option value="Twitter" {% if platform == 'Twitter' %}selected{% endif %}>Twitter</option>
                 <option value="Facebook" {% if platform == 'Facebook' %}selected{% endif %}>Facebook</option>
                 <option value="Instagram" {% if platform == 'Instagram' %}selected{% endif %}>Instagram</option>
@@ -98,12 +77,10 @@
         </form>
 
         {% if prediction %}
-        <div class="result {% if prediction == 'Bullying' %}bullying{% else %}non-bullying{% endif %}">
-            Prediction: {{ prediction }}
-            <div class="details">
-                <strong>Comment:</strong> "{{ comment }}"<br>
-                <strong>Platform:</strong> {{ platform }}
-            </div>
+        <div class="result">
+            <p><strong>Prediction:</strong> {{ prediction }}</p>
+            <p><strong>Comment:</strong> {{ comment }}</p>
+            <p><strong>Platform:</strong> {{ platform }}</p>
         </div>
         {% endif %}
     </div>
