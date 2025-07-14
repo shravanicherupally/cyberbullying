@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cyberbullying Comment Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: #f2f6fc;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: scale(1.01);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 12px 20px;
+            margin-top: 20px;
+            width: 100%;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .bullying {
+            background: #ffe6e6;
+            color: #d60000;
+            border: 1px solid #d60000;
+        }
+        .non-bullying {
+            background: #e6ffea;
+            color: #007f00;
+            border: 1px solid #007f00;
+        }
+        .details {
+            margin-top: 10px;
+            font-size: 0.95em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Cyberbullying Comment Classifier</h2>
+        <form method="POST">
+            <label for="comment">Comment:</label>
+            <textarea name="comment" rows="5" placeholder="Enter your comment here..." required>{{ comment or '' }}</textarea>
+
+            <label for="platform">Platform:</label>
+            <select name="platform" required>
+                <option value="" disabled selected>Select a platform</option>
+                <option value="Twitter" {% if platform == 'Twitter' %}selected{% endif %}>Twitter</option>
+                <option value="Facebook" {% if platform == 'Facebook' %}selected{% endif %}>Facebook</option>
+                <option value="Instagram" {% if platform == 'Instagram' %}selected{% endif %}>Instagram</option>
+                <option value="YouTube" {% if platform == 'YouTube' %}selected{% endif %}>YouTube</option>
+                <option value="Reddit" {% if platform == 'Reddit' %}selected{% endif %}>Reddit</option>
+            </select>
+
+            <button type="submit">🔍 Predict</button>
+        </form>
+
+        {% if prediction %}
+        <div class="result {% if prediction == 'Bullying' %}bullying{% else %}non-bullying{% endif %}">
+            Prediction: {{ prediction }}
+            <div class="details">
+                <strong>Comment:</strong> "{{ comment }}"<br>
+                <strong>Platform:</strong> {{ platform }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
