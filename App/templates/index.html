@@ -1,88 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Cyberbullying Comment Classifier</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 40px;
-            background: #f2f6fc;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            padding: 12px 20px;
-            margin-top: 20px;
-            width: 100%;
-            background: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        .result {
-            margin-top: 25px;
-            padding: 15px;
-            border-radius: 4px;
-            font-size: 1.1em;
-            font-weight: bold;
-            background: #e7fbe7;
-            border: 1px solid #52c152;
-            color: #2c7a2c;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Cyberbullying Comment Classifier</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    }
+    .hero {
+      padding: 60px 0;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    .section {
+      padding: 60px 0;
+    }
+    .card {
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+    .img-hero {
+      max-width: 100%;
+      border-radius: 1rem;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- ✅ HERO SECTION -->
+  <section class="hero bg-white">
     <div class="container">
-        <h2>Cyberbullying Comment Classifier</h2>
-        <form method="POST">
-            <label for="comment">Comment:</label>
-            <textarea name="comment" rows="5" placeholder="Enter your comment here..." required>{{ comment or '' }}</textarea>
-
-            <label for="platform">Platform:</label>
-            <select name="platform" required>
-                <option value="" disabled {% if not platform %}selected{% endif %}>Select a platform</option>
-                <option value="Twitter" {% if platform == 'Twitter' %}selected{% endif %}>Twitter</option>
-                <option value="Facebook" {% if platform == 'Facebook' %}selected{% endif %}>Facebook</option>
-                <option value="Instagram" {% if platform == 'Instagram' %}selected{% endif %}>Instagram</option>
-                <option value="YouTube" {% if platform == 'YouTube' %}selected{% endif %}>YouTube</option>
-                <option value="Reddit" {% if platform == 'Reddit' %}selected{% endif %}>Reddit</option>
-            </select>
-
-            <button type="submit">🔍 Predict</button>
-        </form>
-
-        {% if prediction %}
-        <div class="result">
-            <p><strong>Prediction:</strong> {{ prediction }}</p>
-            <p><strong>Comment:</strong> {{ comment }}</p>
-            <p><strong>Platform:</strong> {{ platform }}</p>
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h1>Social Media Comment Classifier</h1>
+          <p class="lead">
+            Predict whether a comment is bullying or non-bullying using supervised ML algorithms.
+          </p>
+          <p>
+            Our tool helps detect harmful comments on platforms like Twitter, Facebook, Instagram, YouTube, and Reddit.
+          </p>
         </div>
-        {% endif %}
+        <div class="col-md-6 text-center">
+          <img src="{{ url_for('static', filename='cyberbullying.jpg') }}" alt="Cyberbullying Detection" class="img-hero">
+        </div>
+      </div>
     </div>
+  </section>
+
+  <!-- ✅ ABOUT SECTION -->
+  <section class="section bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4">About Us</h2>
+      <p class="text-center mb-4">
+        We aim to make social media safer by detecting and flagging bullying comments automatically.
+        Using advanced supervised ML algorithms like Logistic Regression, SVM, Random Forest, AdaBoost, and Gradient Boosting,
+        our classifier empowers moderators and users to identify harmful content quickly.
+      </p>
+      <div class="row text-center">
+        <div class="col-md-4">
+          <h5>Accurate Comment Detection</h5>
+          <p>Identify bullying and non-bullying comments instantly.</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Multi-Platform Support</h5>
+          <p>Works for Twitter, Facebook, Instagram, YouTube, and Reddit.</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Easy to Use</h5>
+          <p>Just enter your comment, choose platform, and predict.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✅ FORM SECTION + INPUT GUIDE -->
+  <section class="section">
+    <div class="container">
+      <div class="row g-4">
+        <!-- FORM -->
+        <div class="col-md-6">
+          <div class="card p-4">
+            <h2 class="mb-4 text-center">Check Your Comment</h2>
+            <form method="POST">
+              <div class="mb-3">
+                <label class="form-label">Comment</label>
+                <textarea name="comment" rows="4" class="form-control" placeholder="Enter your comment here..." required>{{ comment or '' }}</textarea>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Platform</label>
+                <select name="platform" class="form-select" required>
+                  <option value="" disabled {% if not platform %}selected{% endif %}>Select a platform</option>
+                  <option value="Twitter" {% if platform == 'Twitter' %}selected{% endif %}>Twitter</option>
+                  <option value="Facebook" {% if platform == 'Facebook' %}selected{% endif %}>Facebook</option>
+                  <option value="Instagram" {% if platform == 'Instagram' %}selected{% endif %}>Instagram</option>
+                  <option value="YouTube" {% if platform == 'YouTube' %}selected{% endif %}>YouTube</option>
+                  <option value="Reddit" {% if platform == 'Reddit' %}selected{% endif %}>Reddit</option>
+                </select>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">🔍 Predict</button>
+              </div>
+            </form>
+
+            {% if prediction %}
+            <div class="alert alert-success mt-4 text-center">
+              Prediction: {{ prediction }}
+            </div>
+            {% endif %}
+
+            {% if comment or platform %}
+            <div class="alert alert-info mt-2">
+              <strong>Inputs Given:</strong><br/>
+              Comment: "{{ comment }}"<br/>
+              Platform: {{ platform }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- INPUT GUIDE -->
+        <div class="col-md-6">
+          <div class="card p-4">
+            <h4>Understanding the Inputs</h4>
+            <ul>
+              <li><strong>Comment:</strong> The actual text you want to check for cyberbullying.</li>
+              <li><strong>Platform:</strong> The social media platform the comment was posted on.</li>
+            </ul>
+            <h5>Sample Inputs</h5>
+            <ul>
+              <li><em>Non-Bullying:</em> "Have a great day, everyone!"</li>
+              <li><em>Bullying:</em> "You're so pathetic, nobody likes you!"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </body>
 </html>

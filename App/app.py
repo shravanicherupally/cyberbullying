@@ -7,13 +7,15 @@ from sklearn.preprocessing import LabelEncoder
 
 app = Flask(__name__)
 
-# Load model & vectorizer
+# ✅ Load your trained model and vectorizer
 model = joblib.load('model/model.pkl')
 vectorizer = joblib.load('model/vectorizer.pkl')
 
+# ✅ Platform encoder must match training
 platform_encoder = LabelEncoder()
 platform_encoder.fit(['twitter', 'facebook', 'instagram', 'youtube', 'reddit'])
 
+# ✅ Same cleaning as preprocessing step
 def clean_text(text):
     text = text.lower()
     text = re.sub(r"http\S+|www\S+", "", text)
@@ -22,7 +24,7 @@ def clean_text(text):
     return text
 
 @app.route('/', methods=['GET', 'POST'])
-def home():
+def index():
     prediction = None
     comment = ''
     platform = ''
@@ -35,6 +37,7 @@ def home():
         platform_encoded = platform_encoder.transform([platform.lower()])[0]
         X_final = hstack((vec, np.array([[platform_encoded]])))
         pred = model.predict(X_final)[0]
+
         prediction = "Bullying" if pred == 1 else "Non-Bullying"
 
     return render_template(
